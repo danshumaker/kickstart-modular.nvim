@@ -51,4 +51,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+-- Set the mapping
+vim.keymap.set('n', '<leader>c', '<cmd>ChatGPT<CR>', { desc = 'ChatGPT' })
+
 -- vim: ts=2 sts=2 sw=2 et

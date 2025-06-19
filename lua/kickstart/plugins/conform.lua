@@ -14,7 +14,7 @@ return {
       },
     },
     opts = {
-      notify_on_error = false,
+      notify_on_error = true,
       format_on_save = function(bufnr)
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
@@ -24,8 +24,10 @@ return {
           return nil
         else
           return {
-            timeout_ms = 500,
+            timeout_ms = 1000,
+            async = false,
             lsp_format = 'fallback',
+            lsp_fallback = true,
           }
         end
       end,
@@ -36,6 +38,30 @@ return {
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        php = { 'phpcs', 'phpcbf' },
+      },
+      formatters = {
+        ['phpcs'] = {
+          -- Optionally specify the command if not in $PATH
+          command = 'phpcs',
+          args = {
+            '--standard=Drupal', -- or your preferred standard
+            '--report=emacs',
+            '-',
+          },
+        },
+        ['phpcbf'] = {
+          command = 'phpcbf',
+          args = {
+            'fix',
+            '--rules=@PSR12',
+            '$FILENAME',
+          },
+          stdin = false,
+          cwd = function()
+            return vim.fn.getcwd()
+          end,
+        },
       },
     },
   },
